@@ -6,7 +6,7 @@
 #    By: dmanuel- <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/01 10:16:37 by dmanuel-          #+#    #+#              #
-#    Updated: 2023/08/30 14:11:54 by dmanuel-         ###   ########.fr        #
+#    Updated: 2023/08/31 11:55:49 by dmanuel-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ CFLAGS = -Wall -Wextra -Werror
 RM = rm -rf
 NAME = philo.a
 
-SRCS = 
+SRCS = philo.c src/initial.c
 OBJS = $(SRCS:.c=.o)
 
 all: $(NAME)
