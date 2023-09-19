@@ -15,7 +15,7 @@ CFLAGS = -Wall -Wextra -Werror
 RM = rm -rf
 NAME = philo.a
 
-SRCS = philo.c src/initial.c src/threads.c
+SRCS = philo.c src/initial.c src/threads.c src/control.c
 OBJS = $(SRCS:.c=.o)
 
 all: $(NAME)

@@ -16,6 +16,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <pthread.h>
+# include <sys/time.h>
 
 struct	s_data;
 
@@ -50,8 +51,11 @@ typedef struct s_data
 	t_philo				*philos;
 }	t_data;
 
-int		error(char *str, t_data *data);
-void	ft_exit(t_data *data);
-int		init(t_data *data, char **argv, int argc);
-int		thread_init(t_data *data);
+int			error(char *str, t_data *data);
+void		ft_exit(t_data *data);
+int			init(t_data *data, char **argv, int argc);
+int			thread_init(t_data *data);
+u_int64_t	get_time(void);
+void		typing(char *str, t_philo *philo);
+void		eat(t_philo *philo);
 #endif
