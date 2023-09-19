@@ -58,4 +58,7 @@ int			thread_init(t_data *data);
 u_int64_t	get_time(void);
 void		typing(char *str, t_philo *philo);
 void		eat(t_philo *philo);
+long		ft_atoi(const char *str);
+int			ft_strcmp(char *s1, char *s2);
+int			checker(char **argv);
 #endif
