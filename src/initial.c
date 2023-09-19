@@ -12,6 +12,55 @@
 
 #include "../include/philo.h"
 
+int	alloc(t_data *data)
+{
+	data->tid = malloc(sizeof(pthread_t) * data->philos_num);
+	if (!data->tid)
+		return (error(ALLOC_ERR_1, data));
+	data->forks = malloc(sizeof(pthread_mutex_t) * data->philos_num);
+	if (!data->forks)
+		return (error(ALLOC_ERR_2, data));
+	return (0);
+}
+
+int	init_forks(t_data *data)
+{
+	int	i;
+
+	i = -1;
+	while (++i < data->philos_num)
+		pthread_mutex_init(&data->forks[i], NULL);
+	i = 0;
+	data->philos[0].lfork = &data->forks[0];
+	data->philos[0].rfork = &data->forks[data->philos_num - 1];
+	i = 1;
+	while (i < data->philos_num)
+	{
+		data->philos[i].lfork = &data->forks[i];
+		data->philos[i].rfork = &data->forks[i - 1];
+		i++;
+	}
+	return (0);
+}
+
+void	init_philos(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	while (i < data->philos_num)
+	{
+		data->philos[i].data = data;
+		data->philos[i].id = i + 1;
+		data->philos[i].time_to_die = data->death_time;
+		data->philos[i].eat = 0;
+		data->philos[i].eating = 0;
+		data->philos[i].status = 0;
+		pthread_mutex_init(&data->philos[i].lock, NULL);
+		i++;
+	}
+}
+
 int	init_data(t_data *data, char **argv, int argc)
 {
 	data->philos_num = (int) ft_atoi(argv[1]);

@@ -26,6 +26,11 @@ typedef struct s_philo
 	int					eat;
 	int					status;
 	int					eating;
+	u_int64_t			time_to_die;
+	pthread_t 			thread1;
+	pthread_mutex_t		lock;
+	pthread_mutex_t		*rfork;
+	pthread_mutex_t		*lfork;
 }	t_philo;
 
 typedef struct s_data
