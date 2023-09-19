@@ -6,11 +6,51 @@
 /*   By: dmanuel- <dmanuel-@student.42porto.pt>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 11:11:20 by dmanuel-          #+#    #+#             */
-/*   Updated: 2023/09/19 11:43:51 by dmanuel-         ###   ########.fr       */
+/*   Updated: 2023/09/19 11:44:59 by dmanuel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
+
+void	*monitor(void *data)
+{
+	t_philo	*philo;
+
+	philo = (t_philo *) data;
+	pthread_mutex_lock(&philo->data->write);
+	printf("data val: %d", philo->data->dead);
+	pthread_mutex_unlock(&philo->data->write);
+	while (philo->data->dead == 0)
+	{
+		pthread_mutex_lock(&philo->lock);
+		if (philo->data->finished >= philo->data->philos_num)
+			philo->data->dead = 1;
+		pthread_mutex_unlock(&philo->lock);
+	}
+	return ((void *)0);
+}
+
+void	*watcher(void *philo_p)
+{
+	t_philo	*philo;
+
+	philo = (t_philo *) philo_p;
+	while (philo->data->dead == 0)
+	{
+		pthread_mutex_lock(&philo->lock);
+		if (get_time() >= philo->time_to_die && philo->eating == 0)
+			typing(DIED, philo);
+		if (philo->eat == philo->data->eaten)
+		{
+			pthread_mutex_lock(&philo->data->lock);
+			philo->data->finished++;
+			philo->data->eaten++;
+			pthread_mutex_unlock(&philo->data->lock);
+		}
+		pthread_mutex_unlock(&philo->lock);
+	}
+	return ((void *)0);
+}
 
 void	*routine(void *philo_p)
 {
@@ -25,6 +65,9 @@ void	*routine(void *philo_p)
 		eat(philo);
 		typing(THINKING, philo);
 	}
+	if (pthread_join(philo->thread1, NULL))
+		return ((void *)1);
+	return ((void *)0);
 }
 
 int	thread_init(t_data *data)
