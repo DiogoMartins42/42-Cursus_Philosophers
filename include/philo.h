@@ -53,4 +53,5 @@ typedef struct s_data
 int		error(char *str, t_data *data);
 void	ft_exit(t_data *data);
 int		init(t_data *data, char **argv, int argc);
+int		thread_init(t_data *data);
 #endif
