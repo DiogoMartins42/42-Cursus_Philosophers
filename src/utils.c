@@ -6,7 +6,7 @@
 /*   By: dmanuel- <dmanuel-@student.42porto.pt>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 14:18:03 by dmanuel-          #+#    #+#             */
-/*   Updated: 2023/09/19 14:18:03 by dmanuel-         ###   ########.fr       */
+/*   Updated: 2023/09/19 14:40:55 by dmanuel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	checker(char **argv)
 				continue ;
 			}
 			if ((argv[i][j] < 48 || argv[i][j] > 57))
-				return (error(ERR_IN_1, NULL));
+				return (error(ERR_1, NULL));
 			j++;
 		}
 		i++;

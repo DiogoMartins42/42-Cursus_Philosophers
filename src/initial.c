@@ -6,7 +6,7 @@
 /*   By: dmanuel- <dmanuel-@student.42porto.pt>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 11:47:30 by dmanuel-          #+#    #+#             */
-/*   Updated: 2023/08/31 12:25:49 by dmanuel-         ###   ########.fr       */
+/*   Updated: 2023/09/19 11:09:49 by dmanuel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	alloc(t_data *data)
 		return (error(ALLOC_ERR_2, data));
 	data->philos = malloc(sizeof(t_philo) * data->philos_num);
 	if (!data->philos)
-		return (error(ALLOC_ERR_#, data);
+		return (error(ALLOC_ERR_3, data));
 	return (0);
 }
 
@@ -73,7 +73,7 @@ int	init_data(t_data *data, char **argv, int argc)
 	data->eaten = (int) ft_atoi(argv[5]);
 	if (data->philos_num <= 0 || data->philos_num > 200 || \
 	data->death_time < 0 || data->eat_time < 0 || data->sleep_time < 0)
-		return (error(ERR_IN_2, NULL));
+		return (error(ERR_2, NULL));
 	data->dead = 0;
 	data->finished = 0;
 	pthread_mutex_init(&data->write, NULL);

@@ -6,7 +6,7 @@
 /*   By: dmanuel- <dmanuel-@student.42porto.pt>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 12:36:48 by dmanuel-          #+#    #+#             */
-/*   Updated: 2023/09/19 12:36:48 by dmanuel-         ###   ########.fr       */
+/*   Updated: 2023/09/19 14:07:14 by dmanuel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,16 +33,16 @@ void	typing(char *str, t_philo *philo)
 		philo->data->dead = 1;
 	}
 	if (!philo->data->dead)
-		printf("llu %d $s\n", time, philo->id, str);
+		printf("%llu %d %s\n", time, philo->id, str);
 	pthread_mutex_unlock(&philo->data->write);
 }
 
 void	pick_forks(t_philo *philo)
 {
 	pthread_mutex_lock(philo->rfork);
-	typing(PFORKS, philo);
+	typing(PICKS_FORKS, philo);
 	pthread_mutex_lock(philo->lfork);
-	typing(LFORKS, philo);
+	typing(PICKS_FORKS, philo);
 }
 
 void	drop_forks(t_philo *philo)

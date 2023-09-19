@@ -6,7 +6,7 @@
 /*   By: dmanuel- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 14:28:18 by dmanuel-          #+#    #+#             */
-/*   Updated: 2023/08/31 12:26:35 by dmanuel-         ###   ########.fr       */
+/*   Updated: 2023/09/19 14:42:04 by dmanuel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,22 @@
 # include <pthread.h>
 # include <sys/time.h>
 
+# define PICKS_FORKS "has fork"
+# define THINKING "is thinking"
+# define SLEEP "is sleeping"
+# define EATING "is eating"
+# define DIED "has died"
+
+# define ALLOC_ERR_1 "error allocating thread id"
+# define ALLOC_ERR_2 "error allocating philos"
+# define ALLOC_ERR_3 "error allocating forks"
+
+# define ERR_1 "invalid input"
+# define ERR_2 "invalid value"
+
+# define TH_ERR "error creating thread"
+# define JOIN_ERR "error joining threads"
+
 struct	s_data;
 
 typedef struct s_philo
@@ -28,7 +44,7 @@ typedef struct s_philo
 	int					status;
 	int					eating;
 	u_int64_t			time_to_die;
-	pthread_t 			thread1;
+	pthread_t			thread1;
 	pthread_mutex_t		lock;
 	pthread_mutex_t		*rfork;
 	pthread_mutex_t		*lfork;
@@ -61,4 +77,5 @@ void		eat(t_philo *philo);
 long		ft_atoi(const char *str);
 int			ft_strcmp(char *s1, char *s2);
 int			checker(char **argv);
+void		*routine(void *philo_p);
 #endif
