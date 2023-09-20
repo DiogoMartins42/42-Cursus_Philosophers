@@ -94,4 +94,5 @@ int	thread_init(t_data *data)
 		if (pthread_join(data->tid[i], NULL))
 			return (error(JOIN_ERR, data));
 	}
+	return (0);
 }

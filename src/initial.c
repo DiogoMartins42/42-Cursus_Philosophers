@@ -69,10 +69,13 @@ int	init_data(t_data *data, char **argv, int argc)
 	data->philos_num = (int) ft_atoi(argv[1]);
 	data->death_time = (u_int64_t) ft_atoi(argv[2]);
 	data->eat_time = (u_int64_t) ft_atoi(argv[3]);
-	data->death_time = (u_int64_t) ft_atoi(argv[4]);
-	data->eaten = (int) ft_atoi(argv[5]);
+	data->sleep_time = (u_int64_t) ft_atoi(argv[4]);
+	if (argc == 6)
+		data->eaten = (int) ft_atoi(argv[5]);
+	else
+		data->eaten = -1;
 	if (data->philos_num <= 0 || data->philos_num > 200 || \
-	data->death_time < 0 || data->eat_time < 0 || data->sleep_time < 0)
+	data->death_time <= 0 || data->eat_time <= 0 || data->sleep_time <= 0)
 		return (error(ERR_2, NULL));
 	data->dead = 0;
 	data->finished = 0;
