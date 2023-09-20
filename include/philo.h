@@ -79,4 +79,5 @@ int			ft_strcmp(char *s1, char *s2);
 int			checker(char **argv);
 void		*routine(void *philo_p);
 int			init_data(t_data *data, char **argv, int argc);
+void		ft_usleep(t_philo *philo, u_int64_t time);
 #endif

@@ -71,3 +71,11 @@ int	checker(char **argv)
 	}
 	return (0);
 }
+
+void	ft_usleep(t_philo *philo, u_int64_t time)
+{
+	if ((get_time() + time) >= philo->time_to_die)
+		usleep((philo->time_to_die - get_time()) * 1000);
+	else
+		usleep(time * 1000);
+}

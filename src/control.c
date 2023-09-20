@@ -50,7 +50,7 @@ void	drop_forks(t_philo *philo)
 	pthread_mutex_unlock(philo->rfork);
 	pthread_mutex_unlock(philo->lfork);
 	typing(SLEEP, philo);
-	usleep(philo->data->sleep_time);
+	ft_usleep(philo, philo->data->sleep_time);
 }
 
 void	eat(t_philo *philo)
@@ -61,7 +61,7 @@ void	eat(t_philo *philo)
 	philo->time_to_die = get_time() + philo->data->death_time;
 	typing(EATING, philo);
 	philo->eat++;
-	usleep(philo->data->eat_time);
+	ft_usleep(philo, philo->data->eat_time);
 	philo->eating = 0;
 	pthread_mutex_unlock(&philo->lock);
 	drop_forks(philo);

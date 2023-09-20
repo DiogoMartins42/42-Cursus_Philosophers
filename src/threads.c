@@ -57,6 +57,9 @@ void	*routine(void *philo_p)
 	t_philo	*philo;
 
 	philo = (t_philo *) philo_p;
+	pthread_mutex_lock(&philo->data->lock);
+	philo->time_to_die = philo->data->death_time + philo->data->start_time;
+	pthread_mutex_unlock(&philo->data->lock);
 	if (pthread_create(&philo->thread1, NULL, &watcher, \
 	(void *)philo))
 		return ((void *)1);
@@ -86,7 +89,7 @@ int	thread_init(t_data *data)
 	{
 		if (pthread_create(&data->tid[i], NULL, &routine, &data->philos[i]))
 			return (error(TH_ERR, data));
-		usleep(1);
+		usleep(1000);
 	}
 	i = -1;
 	while (++i < data->philos_num)
