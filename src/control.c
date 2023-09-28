@@ -40,8 +40,8 @@ void	typing(char *str, t_philo *philo)
 void	pick_forks(t_philo *philo)
 {
 	pthread_mutex_lock(philo->rfork);
-	typing(PICKS_FORKS, philo);
 	pthread_mutex_lock(philo->lfork);
+	typing(PICKS_FORKS, philo);
 	typing(PICKS_FORKS, philo);
 }
 
@@ -55,8 +55,8 @@ void	drop_forks(t_philo *philo)
 
 void	eat(t_philo *philo)
 {
-	pick_forks(philo);
 	pthread_mutex_lock(&philo->lock);
+	pick_forks(philo);
 	philo->eating = 1;
 	philo->time_to_die = get_time() + philo->data->death_time;
 	typing(EATING, philo);

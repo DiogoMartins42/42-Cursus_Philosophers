@@ -35,9 +35,10 @@ void	*watcher(void *philo_p)
 	t_philo	*philo;
 
 	philo = (t_philo *) philo_p;
+	pthread_mutex_lock(&philo->lock);
 	while (philo->data->dead == 0)
 	{
-		pthread_mutex_lock(&philo->lock);
+
 		if (get_time() >= philo->time_to_die && philo->eating == 0)
 			typing(DIED, philo);
 		if (philo->eat == philo->data->eaten)
@@ -47,8 +48,8 @@ void	*watcher(void *philo_p)
 			philo->data->eaten++;
 			pthread_mutex_unlock(&philo->data->lock);
 		}
-		pthread_mutex_unlock(&philo->lock);
 	}
+	pthread_mutex_unlock(&philo->lock);
 	return ((void *)0);
 }
 
@@ -76,15 +77,15 @@ void	*routine(void *philo_p)
 int	thread_init(t_data *data)
 {
 	int			i;
-	pthread_t	t0;
+	//pthread_t	t0;
 
 	i = -1;
 	data->start_time = get_time();
-	if (data->eaten > 0)
+	/*if (data->eaten > 0)
 	{
 		if (pthread_create(&t0, NULL, &monitor, &data->philos[0]))
 			return (error(TH_ERR, data));
-	}
+	}*/
 	while (++i < data->philos_num)
 	{
 		if (pthread_create(&data->tid[i], NULL, &routine, &data->philos[i]))

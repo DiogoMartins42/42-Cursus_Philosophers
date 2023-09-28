@@ -6,12 +6,12 @@
 #    By: dmanuel- <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/01 10:16:37 by dmanuel-          #+#    #+#              #
-#    Updated: 2023/09/20 10:11:41 by dmanuel-         ###   ########.fr        #
+#    Updated: 2023/09/20 15:04:30 by dmanuel-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -g -Wall -Wextra -Werror -L. -lpthread -g3 -fsanitize=thread -O3 -march=native
 RM = rm -rf
 NAME = philo
 
