@@ -27,6 +27,7 @@ void	typing(char *str, t_philo *philo)
 
 	pthread_mutex_lock(&philo->data->write);
 	time = get_time() - philo->data->start_time;
+	pthread_mutex_lock(&philo->data->lock);
 	if (ft_strcmp(DIED, str) == 0 && philo->data->dead == 0)
 	{
 		printf("%lu %d %s\n", time, philo->id, str);
@@ -34,29 +35,48 @@ void	typing(char *str, t_philo *philo)
 	}
 	if (!philo->data->dead)
 		printf("%lu %d %s\n", time, philo->id, str);
+	pthread_mutex_unlock(&philo->data->lock);
 	pthread_mutex_unlock(&philo->data->write);
 }
 
-void	pick_forks(t_philo *philo)
+static bool	get_fork(t_philo *philo, int fork)
 {
-	pthread_mutex_lock(philo->rfork);
-	pthread_mutex_lock(philo->lfork);
+	if (fork == 1)
+		pthread_mutex_lock(philo->rfork);
+	if (fork == 2)
+		pthread_mutex_lock(philo->lfork);
+	pthread_mutex_lock(&philo->data->lock);
+	if (philo->data->dead == 1)
+	{
+		pthread_mutex_unlock(&philo->data->lock);
+		if (fork == 1)
+			pthread_mutex_unlock(philo->rfork);
+		if (fork == 2)
+			pthread_mutex_unlock(philo->lfork);
+		return (false);
+	}
+	pthread_mutex_unlock(&philo->data->lock);
 	typing(PICKS_FORKS, philo);
-	typing(PICKS_FORKS, philo);
+	return (true);
 }
 
-void	drop_forks(t_philo *philo)
+static bool	get_forks(t_philo *philo)
 {
-	pthread_mutex_unlock(philo->rfork);
-	pthread_mutex_unlock(philo->lfork);
-	typing(SLEEP, philo);
-	ft_usleep(philo, philo->data->sleep_time);
+	if (!get_fork(philo, 2))
+		return (false);
+	if (!get_fork(philo, 1))
+	{
+		pthread_mutex_unlock(philo->lfork);
+		return (false);
+	}
+	return (true);
 }
 
 void	eat(t_philo *philo)
 {
+	if (!get_forks(philo))
+		return ;
 	pthread_mutex_lock(&philo->lock);
-	pick_forks(philo);
 	philo->eating = 1;
 	philo->time_to_die = get_time() + philo->data->death_time;
 	typing(EATING, philo);
@@ -64,5 +84,8 @@ void	eat(t_philo *philo)
 	ft_usleep(philo, philo->data->eat_time);
 	philo->eating = 0;
 	pthread_mutex_unlock(&philo->lock);
-	drop_forks(philo);
+	pthread_mutex_unlock(philo->rfork);
+	pthread_mutex_unlock(philo->lfork);
+	typing(SLEEP, philo);
+	ft_usleep(philo, philo->data->sleep_time);
 }

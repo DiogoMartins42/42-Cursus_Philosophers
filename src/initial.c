@@ -39,8 +39,8 @@ int	init_forks(t_data *data)
 	i = 1;
 	while (i < data->philos_num)
 	{
-		data->philos[i].lfork = &data->forks[i];
-		data->philos[i].rfork = &data->forks[i - 1];
+		data->philos[i].rfork = &data->forks[i];
+		data->philos[i].lfork = &data->forks[i - 1];
 		i++;
 	}
 	return (0);

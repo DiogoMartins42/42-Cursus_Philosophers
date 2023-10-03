@@ -17,6 +17,7 @@
 # include <stdlib.h>
 # include <pthread.h>
 # include <sys/time.h>
+# include <stdbool.h>
 
 # define PICKS_FORKS "has fork"
 # define THINKING "is thinking"
