@@ -71,7 +71,10 @@ int	main(int argc, char **argv)
 	if (init(&data, argv, argc))
 		return (1);
 	if (data.philos_num == 1)
+	{
+		data.solo = 0;
 		return (one_philo(&data));
+	}
 	if (thread_init(&data))
 		return (1);
 	ft_exit(&data);

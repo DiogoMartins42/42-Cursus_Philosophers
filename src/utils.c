@@ -79,3 +79,17 @@ void	ft_usleep(t_philo *philo, u_int64_t time)
 	else
 		usleep(time * 1000);
 }
+
+void	is_solo(t_philo *philo, int done)
+{
+	if (done == 0)
+	{
+		pthread_mutex_lock(philo->lfork);
+		typing(PICKS_FORKS, philo);
+		pthread_mutex_unlock(philo->lfork);
+		pthread_mutex_lock(&philo->data->lock);
+		done = 1;
+		pthread_mutex_unlock(&philo->data->lock);
+		ft_usleep(philo, philo->data->eat_time);
+	}
+}

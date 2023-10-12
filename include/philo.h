@@ -66,6 +66,7 @@ typedef struct s_data
 	u_int64_t			sleep_time;
 	u_int64_t			death_time;
 	t_philo				*philos;
+	int					solo;
 }	t_data;
 
 int			error(char *str, t_data *data);
@@ -81,4 +82,6 @@ int			checker(char **argv);
 void		*routine(void *philo_p);
 int			init_data(t_data *data, char **argv, int argc);
 void		ft_usleep(t_philo *philo, u_int64_t time);
+bool		get_fork(t_philo *philo, int fork);
+void		is_solo(t_philo *philo, int done);
 #endif

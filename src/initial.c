@@ -26,24 +26,32 @@ int	alloc(t_data *data)
 	return (0);
 }
 
-int	init_forks(t_data *data)
+void	init_forks(t_data *data, int i)
 {
-	int	i;
-
-	i = -1;
-	while (++i < data->philos_num)
-		pthread_mutex_init(&data->forks[i], NULL);
-	i = 0;
-	data->philos[0].lfork = &data->forks[0];
-	data->philos[0].rfork = &data->forks[data->philos_num - 1];
-	i = 1;
 	while (i < data->philos_num)
 	{
-		data->philos[i].rfork = &data->forks[i];
-		data->philos[i].lfork = &data->forks[i - 1];
+		if (i % 2)
+		{
+			data->philos[i].rfork = &data->forks[i];
+			data->philos[i].lfork = &data->forks[i - 1];
+		}
+		else
+		{
+			data->philos[i].lfork = &data->forks[i];
+			data->philos[i].rfork = &data->forks[i + 1];
+		}
 		i++;
 	}
-	return (0);
+	if (i % 2)
+	{
+		data->philos[i].lfork = &data->forks[i - 1];
+		data->philos[i].rfork = &data->forks[i];
+	}
+	else
+	{
+		data->philos[i].lfork = &data->forks[i];
+		data->philos[i].rfork = &data->forks[0];
+	}
 }
 
 void	init_philos(t_data *data)
@@ -62,6 +70,9 @@ void	init_philos(t_data *data)
 		pthread_mutex_init(&data->philos[i].lock, NULL);
 		i++;
 	}
+	i = 0;
+	while (i < data->philos_num)
+		pthread_mutex_init(&data->forks[i++], NULL);
 }
 
 int	init_data(t_data *data, char **argv, int argc)
@@ -70,6 +81,7 @@ int	init_data(t_data *data, char **argv, int argc)
 	data->death_time = (u_int64_t) ft_atoi(argv[2]);
 	data->eat_time = (u_int64_t) ft_atoi(argv[3]);
 	data->sleep_time = (u_int64_t) ft_atoi(argv[4]);
+	data->solo = 0;
 	if (argc == 6)
 		data->eaten = (int) ft_atoi(argv[5]);
 	else
@@ -90,8 +102,7 @@ int	init(t_data *data, char **argv, int argc)
 		return (1);
 	if (alloc(data))
 		return (1);
-	if (init_forks(data))
-		return (1);
 	init_philos(data);
+	init_forks(data, 0);
 	return (0);
 }

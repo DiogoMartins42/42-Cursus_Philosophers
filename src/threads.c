@@ -26,7 +26,9 @@ void	*monitor(void *data)
 		pthread_mutex_unlock(&philo->data->lock);
 		pthread_mutex_lock(&philo->data->lock);
 		if (philo->data->finished >= philo->data->philos_num)
+		{
 			philo->data->dead = 1;
+		}
 		pthread_mutex_unlock(&philo->data->lock);
 		pthread_mutex_lock(&philo->data->lock);
 	}
@@ -74,7 +76,7 @@ void	*routine(void *philo_p)
 	if (pthread_detach(philo->thread1))
 		return ((void *)1);
 	pthread_mutex_lock(&philo->data->lock);
-	while (philo->data->dead == 0)
+	while (philo->data->dead == 0 && philo->data->solo == 0)
 	{
 		pthread_mutex_unlock(&philo->data->lock);
 		eat(philo);
@@ -82,7 +84,6 @@ void	*routine(void *philo_p)
 		pthread_mutex_lock(&philo->data->lock);
 	}
 	pthread_mutex_unlock(&philo->data->lock);
-	printf("potato\n");
 	return ((void *)0);
 }
 
@@ -97,7 +98,7 @@ int	thread_init(t_data *data)
 	{
 		if (pthread_create(&t0, NULL, &monitor, &data->philos[0]))
 			return (error(TH_ERR, data));
-		pthread_detach(t0);	
+		pthread_detach(t0);
 	}
 	while (++i < data->philos_num)
 	{

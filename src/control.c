@@ -39,7 +39,7 @@ void	typing(char *str, t_philo *philo)
 	pthread_mutex_unlock(&philo->data->write);
 }
 
-static bool	get_fork(t_philo *philo, int fork)
+bool	get_fork(t_philo *philo, int fork)
 {
 	if (fork == 1)
 		pthread_mutex_lock(philo->rfork);
@@ -74,18 +74,23 @@ static bool	get_forks(t_philo *philo)
 
 void	eat(t_philo *philo)
 {
-	if (!get_forks(philo))
-		return ;
-	pthread_mutex_lock(&philo->lock);
-	philo->eating = 1;
-	philo->time_to_die = get_time() + philo->data->death_time;
-	typing(EATING, philo);
-	philo->eat++;
-	ft_usleep(philo, philo->data->eat_time);
-	philo->eating = 0;
-	pthread_mutex_unlock(&philo->lock);
-	pthread_mutex_unlock(philo->rfork);
-	pthread_mutex_unlock(philo->lfork);
-	typing(SLEEP, philo);
-	ft_usleep(philo, philo->data->sleep_time);
+	if (philo->data->philos_num != 1)
+	{
+		if (!get_forks(philo))
+			return ;
+		pthread_mutex_lock(&philo->lock);
+		philo->eating = 1;
+		philo->time_to_die = get_time() + philo->data->death_time;
+		typing(EATING, philo);
+		philo->eat++;
+		ft_usleep(philo, philo->data->eat_time);
+		philo->eating = 0;
+		pthread_mutex_unlock(&philo->lock);
+		pthread_mutex_unlock(philo->rfork);
+		pthread_mutex_unlock(philo->lfork);
+		typing(SLEEP, philo);
+		ft_usleep(philo, philo->data->sleep_time);
+	}
+	else
+		is_solo(philo, philo->data->solo);
 }
